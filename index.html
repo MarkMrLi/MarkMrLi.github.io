@@ -1,610 +1,659 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+    <!-- title -->
+<!-- keywords -->
 <head>
-  <meta charset="utf-8">
-  
-  
-  <title>Welcome My Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta property="og:type" content="website">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Mark Lee">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Mark Lee">
+        <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    <meta name="description" content="">
+    <meta property="og:type" content="website">
 <meta property="og:title" content="Welcome My Blog">
 <meta property="og:url" content="http://example.com/index.html">
 <meta property="og:site_name" content="Welcome My Blog">
 <meta property="og:locale" content="en_US">
 <meta property="article:author" content="Mark Lee">
 <meta name="twitter:card" content="summary">
-  
-    <link rel="alternate" href="/atom.xml" title="Welcome My Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
-  
-  
-<link rel="stylesheet" href="/css/style.css">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <link rel="icon" href="/assets/favicon.ico">
+    <title>MarkLee&#39;s Studio</title>
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+    (function (w) {
+        'use strict'
+        // rel=preload support test
+        if (!w.loadCSS) {
+            w.loadCSS = function () {}
+        }
+        // define on the loadCSS obj
+        var rp = (loadCSS.relpreload = {})
+        // rel=preload feature support test
+        // runs once and returns a function for compat purposes
+        rp.support = (function () {
+            var ret
+            try {
+                ret = w.document.createElement('link').relList.supports('preload')
+            } catch (e) {
+                ret = false
+            }
+            return function () {
+                return ret
+            }
+        })()
 
-  
-    
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+        // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+        // then change that media back to its intended value on load
+        rp.bindMediaToggle = function (link) {
+            // remember existing media attr for ultimate state, or default to 'all'
+            var finalMedia = link.media || 'all'
 
-  
-  
+            function enableStylesheet() {
+                link.media = finalMedia
+            }
+
+            // bind load handlers to enable media
+            if (link.addEventListener) {
+                link.addEventListener('load', enableStylesheet)
+            } else if (link.attachEvent) {
+                link.attachEvent('onload', enableStylesheet)
+            }
+
+            // Set rel and non-applicable media type to start an async request
+            // note: timeout allows this to happen async to let rendering continue in IE
+            setTimeout(function () {
+                link.rel = 'stylesheet'
+                link.media = 'only x'
+            })
+            // also enable media after 3 seconds,
+            // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+            setTimeout(enableStylesheet, 3000)
+        }
+
+        // loop through link elements in DOM
+        rp.poly = function () {
+            // double check this to prevent external calls from running
+            if (rp.support()) {
+                return
+            }
+            var links = w.document.getElementsByTagName('link')
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i]
+                // qualify links to those with rel=preload and as=style attrs
+                if (
+                    link.rel === 'preload' &&
+                    link.getAttribute('as') === 'style' &&
+                    !link.getAttribute('data-loadcss')
+                ) {
+                    // prevent rerunning on link
+                    link.setAttribute('data-loadcss', true)
+                    // bind listeners to toggle media back
+                    rp.bindMediaToggle(link)
+                }
+            }
+        }
+
+        // if unsupported, run the polyfill
+        if (!rp.support()) {
+            // run once at least
+            rp.poly()
+
+            // rerun poly on an interval until onload
+            var run = w.setInterval(rp.poly, 500)
+            if (w.addEventListener) {
+                w.addEventListener('load', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            } else if (w.attachEvent) {
+                w.attachEvent('onload', function () {
+                    rp.poly()
+                    w.clearInterval(run)
+                })
+            }
+        }
+
+        // commonjs
+        if (typeof exports !== 'undefined') {
+            exports.loadCSS = loadCSS
+        } else {
+            w.loadCSS = loadCSS
+        }
+    })(typeof global !== 'undefined' ? global : this)
+</script>
+
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .footer-fixed-btn,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(
+            -45deg,
+            #444 0,
+            #444 80px,
+            #333 80px,
+            #333 160px
+        );
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+</style>
+
+    <link id="stylesheet-fancybox" rel="preload" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-base" rel="preload" href="/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link id="stylesheet-mobile" rel="preload" href="/css/mobile.css" as="style" onload="this.onload=null;this.rel='stylesheet';this.media='screen and (max-width: 960px)'">
+    <link id="stylesheet-theme-dark" rel="preload" href="/css/dark.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" href="/font/Oswald-Regular.ttf" as="font" crossorigin>
+    <link rel="preload" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" as="font" crossorigin>
+    <!-- algolia -->
+    <!-- 百度统计  -->
+    <!-- 谷歌统计  -->
+    <!-- Google tag (gtag.js) -->
 <meta name="generator" content="Hexo 7.3.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Welcome My Blog</a>
-      </h1>
-      
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ == undefined) {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js" />')
+        }
+    </script>
+        <body class="home-body">
+        <!-- header -->
+        <header class="header header-mobile index-header">
+    <!-- top read progress line -->
+    <div class="header-element">
+        <div class="read-progress"></div>
     </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-        
-          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
-        
-        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
-      </div>
+    <!-- sidebar menu button -->
+    <div class="header-element">
+        <div class="header-sidebar-menu">
+            <div style="padding-left: 1px;">&#xe775;</div>
+        </div>
     </div>
-  </div>
+    <!-- header actions -->
+    <div class="header-actions">
+        <!-- theme mode switch button -->
+        <span class="header-theme-btn header-element">
+            <i class="fas fa-adjust"></i>
+        </span>
+        <!-- back to home page text -->
+        <span class="home-link header-element">
+            <a href="/">MarkLee's Studio.</a>
+        </span>
+    </div>
+    <!-- toggle banner -->
+    <div class="banner">
+        <div class="blog-title header-element">
+            <a href="/">MarkLee&#39;s Studio.</a>
+        </div>
+        <div class="post-title header-element">
+            <a href="#" class="post-name"></a>
+        </div>
+    </div>
 </header>
 
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-openEuler：系统服务的配置和管理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/d78e2e2.html" class="article-date">
-  <time class="dt-published" datetime="2024-07-31T14:12:56.000Z" itemprop="datePublished">2024-07-31</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>►<a class="article-category-link" href="/categories/Linux/openEuler/">openEuler</a>
-  </div>
+        <!-- fixed footer -->
+        <footer class="footer-fixed index-footer-fixed">
+    <!-- donate button -->
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/d78e2e2.html">openEuler：系统服务的配置和管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>Tag： #任务管理 #系统服务 #Linux</p>
-<h1 id="系统服务基本概念"><a href="#系统服务基本概念" class="headerlink" title="系统服务基本概念"></a>系统服务基本概念</h1><h2 id="系统服务"><a href="#系统服务" class="headerlink" title="系统服务"></a>系统服务</h2><p>系统服务是在系统启动时候自启动的一些后台程序，主要负责一些系统必须的核心功能，如：网络服务，文件系统管理器，日志记录等等<br>一些常见的系统服务包括：</p>
-<ul>
-<li>网络服务：如SSH（远程登录）、HTTP服务器（如Apache）、DNS服务器（如BIND）等。</li>
-<li>日志服务：如Syslog，用于记录系统和应用程序的日志信息。</li>
-<li>文件系统服务：如NFS（网络文件系统），允许在不同主机之间共享文件。</li>
-<li>时间同步服务：如NTP（网络时间协议），用于同步系统时间。</li>
-</ul>
-<h2 id="守护进程与系统服务的概念区分"><a href="#守护进程与系统服务的概念区分" class="headerlink" title="守护进程与系统服务的概念区分"></a>守护进程与系统服务的概念区分</h2><ul>
-<li>守护进程是一种脱离终端，在后台运行的进程</li>
-<li>这些后台运行的进程其中一些提供系统服务</li>
-<li>总的来说守护进程是一个更广泛的概念，因为守护进程仍可能提供一些非系统的服务</li>
-</ul>
-<h2 id="系统和服务管理器-—-systemd"><a href="#系统和服务管理器-—-systemd" class="headerlink" title="系统和服务管理器 — systemd"></a>系统和服务管理器 — <code>systemd</code></h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p><code>systemd</code> 设计目标是提供一套完整的系统启动和管理的解决方案</p>
-<blockquote>
-<p>根据 Linux 惯例，字母<code>d</code>是守护进程（daemon）的缩写。 Systemd 这个名字的含义，就是它要守护整个系统。</p>
-</blockquote>
-<h3 id="系统管理"><a href="#系统管理" class="headerlink" title="系统管理"></a>系统管理</h3><p>现在 <code>systemd</code> 已经成为很多发行版的标准配置<br>使用 <code>systemctl --version</code> 查看 <code>systemd</code> 的版本</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# systemctl --version</span><br><span class="line">systemd 249 (v249-52.oe2203sp2)</span><br><span class="line">+PAM +AUDIT +SELINUX -APPARMOR +IMA -SMACK +SECCOMP +GCRYPT +GNUTLS -OPENSSL +ACL +BLKID -CURL -ELFUTILS -FIDO2 +IDN2 -IDN -IPTC +KMOD -LIBCRYPTSETUP +LIBFDISK +PCRE2 -PWQUALITY +P11KIT -QRENCODE +BZIP2 +LZ4 +XZ +ZLIB -ZSTD +XKBCOMMON +UTMP +SYSVINIT default-hierarchy=legacy</span><br></pre></td></tr></table></figure>
-
-<p><code>systemd</code> 功能强大体系复杂，下图为 <code>systemd</code> 架构图<br><img src="/../images/Pasted%20image%2020240707130349.png"></p>
-<h3 id="Unit"><a href="#Unit" class="headerlink" title="Unit"></a>Unit</h3><p><strong>systemd 开启和监督服务是基于 Unit 概念</strong><br>不同的系统资源对应不同的 Unit，Unit 分为 12 类：</p>
-<ul>
-<li>Service unit：系统服务</li>
-<li>Target unit：多个 Unit 构成的一个组</li>
-<li>Device Unit：硬件设备</li>
-<li>Mount Unit：文件系统的挂载点</li>
-<li>Automount Unit：自动挂载点</li>
-<li>Path Unit：文件或路径</li>
-<li>Scope Unit：不是由 Systemd 启动的外部进程</li>
-<li>Slice Unit：进程组</li>
-<li>Snapshot Unit：Systemd 快照，可以切回某个快照</li>
-<li>Socket Unit：进程间通信的 socket</li>
-<li>Swap Unit：swap 文件</li>
-<li>Timer Unit：定时器</li>
-</ul>
-<p><code>systemctl list-units</code>命令可以查看当前系统的所有 Unit</p>
-<h4 id="Unit的配置文件"><a href="#Unit的配置文件" class="headerlink" title="Unit的配置文件"></a>Unit的配置文件</h4><h5 id="Unit-依赖关系"><a href="#Unit-依赖关系" class="headerlink" title="Unit 依赖关系"></a>Unit 依赖关系</h5><p>Unit 之间存在依赖关系：A 依赖于 B，就意味着 Systemd 在启动 A 的时候，同时会去启动 B。</p>
-<h5 id="存放配置文件的目录"><a href="#存放配置文件的目录" class="headerlink" title="存放配置文件的目录"></a>存放配置文件的目录</h5><p><img src="/../images/Snipaste_2024-07-08_01-53-12.png"></p>
-<p>Systemd 默认从目录<code>/etc/systemd/system/</code>读取配置文件。但是，里面存放的大部分文件都是符号链接，指向目录<code>/usr/lib/systemd/system/</code>，真正的配置文件存放在那个目录。</p>
-<p>符号链接可以简单理解为一个副本，或者类比为 Windows 中的快捷方式</p>
-<h4 id="配置文件的格式"><a href="#配置文件的格式" class="headerlink" title="配置文件的格式"></a>配置文件的格式</h4><p>以下面文件内容为例</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost system]<span class="comment"># cat cron.service</span></span><br><span class="line">[Unit]</span><br><span class="line">Description=Command Scheduler</span><br><span class="line">After=auditd.service nss-user-lookup.target systemd-user-sessions.service time-sync.target ypbind.service autofs.service</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">EnvironmentFile=/etc/sysconfig/crond</span><br><span class="line">ExecStart=/usr/sbin/crond -n <span class="variable">$CRONDARGS</span></span><br><span class="line">ExecReload=/bin/kill -URG <span class="variable">$MAINPID</span></span><br><span class="line">KillMode=process</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=<span class="number">30</span>s</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">Alias=cron.service</span><br></pre></td></tr></table></figure>
-<p>配置文件主要分为三个区块</p>
-<h5 id="Unit-区块"><a href="#Unit-区块" class="headerlink" title="[ Unit ] 区块"></a>[ Unit ] 区块</h5><p>定义单元的元数据和依赖关系：</p>
-<ul>
-<li><strong>Description</strong>：描述单元的简要信息。</li>
-<li><strong>Documentation</strong>：相关文档的URL。</li>
-<li><strong>After</strong>：指定此单元应在列出的其他单元启动后启动。</li>
-</ul>
-<h5 id="Service-区块"><a href="#Service-区块" class="headerlink" title="[ Service ] 区块"></a>[ Service ] 区块</h5><p>该区块只有 <code>.service</code> 服务单元有，定义其行为和属性</p>
-<ul>
-<li><strong>EnvironmentFile</strong>：指定一个环境变量文件，这里是<code>/etc/sysconfig/crond</code>。</li>
-<li><strong>ExecStart</strong>：定义启动服务的命令，这里是<code>/usr/sbin/crond -n $CRONDARGS</code>，其中<code>$CRONDARGS</code>是从环境文件中读取的变量。</li>
-<li><strong>ExecReload</strong>：定义重新加载服务配置时执行的命令，这里是<code>/bin/kill -URG $MAINPID</code>。</li>
-<li><strong>KillMode</strong>：定义如何终止服务，这里是<code>process</code>，表示杀死主进程和子进程。</li>
-<li><strong>Restart</strong>：定义重启策略，这里是<code>on-failure</code>，表示在服务失败时重启。</li>
-<li><strong>RestartSec</strong>：定义重启前的等待时间，这里是30秒。</li>
-</ul>
-<h5 id="Install-区块"><a href="#Install-区块" class="headerlink" title="[ Install ] 区块"></a>[ Install ] 区块</h5><ul>
-<li><strong>WantedBy</strong>：定义此服务在哪些目标单元下启用，这里是<code>multi-user.target</code>。</li>
-<li><strong>Alias</strong>：定义此服务的别名，这里是<code>cron.service</code>。</li>
-</ul>
-<h3 id="挂载和自动挂载点管理"><a href="#挂载和自动挂载点管理" class="headerlink" title="挂载和自动挂载点管理"></a>挂载和自动挂载点管理</h3><p>Systemd 监控和管理挂载和自动挂载点。<br>Systemd 使用 _mount 单元作为挂载点 ，自动挂载单元用于自动挂载点_。</p>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><hr>
-<h1 id="管理系统服务"><a href="#管理系统服务" class="headerlink" title="管理系统服务"></a>管理系统服务</h1><p><code>systemd</code>  管理任务组，分配资源，跟踪和管理进程的生命周期是依据 <code>cgroup</code> 特性的，可见文章 [[浅谈 Cgroups 和 systemd]]</p>
-<h2 id="systemd-的命令组"><a href="#systemd-的命令组" class="headerlink" title="systemd 的命令组"></a><code>systemd</code> 的命令组</h2><p><code>systemd</code> 不是一个命令，而是一组命令</p>
-<h3 id="systemctl"><a href="#systemctl" class="headerlink" title="systemctl"></a>systemctl</h3><p><code>systemctl</code> 是 <code>systemd</code> 的主命令，用于系统管理</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重启系统</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl reboot</span><br><span class="line"></span><br><span class="line"><span class="comment"># 关闭系统，切断电源</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl poweroff</span><br><span class="line"></span><br><span class="line"><span class="comment"># CPU停止工作</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl halt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 暂停系统</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl <span class="built_in">suspend</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 让系统进入冬眠状态</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl hibernate</span><br><span class="line"></span><br><span class="line"><span class="comment"># 让系统进入交互式休眠状态</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl hybrid-sleep</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动进入救援状态（单用户状态）</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl rescue</span><br></pre></td></tr></table></figure>
-
-<h4 id="Unit管理"><a href="#Unit管理" class="headerlink" title="Unit管理"></a>Unit管理</h4><p>对于用户来说，最常用的是下面这些命令，用于启动和停止 Unit（主要是 service）。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"> </span><br><span class="line"><span class="comment"># 立即启动一个服务</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl start apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 立即停止一个服务</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl stop apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重启一个服务</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl restart apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 杀死一个服务的所有子进程</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl <span class="built_in">kill</span> apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重新加载一个服务的配置文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl reload apache.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 重载所有修改过的配置文件</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl daemon-reload</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示所有服务</span></span><br><span class="line">$ systemctl list-units --<span class="built_in">type</span> service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个 Unit 的所有底层参数</span></span><br><span class="line">$ systemctl show httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示某个 Unit 的指定属性的值</span></span><br><span class="line">$ systemctl show -p CPUShares httpd.service</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置某个 Unit 的指定属性</span></span><br><span class="line">$ <span class="built_in">sudo</span> systemctl set-property httpd.service CPUShares=500</span><br></pre></td></tr></table></figure>
-
-
-<h3 id="systemd-analyze"><a href="#systemd-analyze" class="headerlink" title="systemd-analyze"></a><code>systemd-analyze</code></h3><p><strong><code>systemd-analyze</code></strong> 命令用于查看启动耗时</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">systemd-analyze</span><br><span class="line">Startup finished <span class="keyword">in</span> 855ms (kernel) + 3.890s (initrd) + 9.291s (userspace) = 14.037s </span><br><span class="line">multi-user.target reached after 3.277s <span class="keyword">in</span> userspace</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看启动耗时</span></span><br><span class="line">$ systemd-analyze                                                                                       </span><br><span class="line"><span class="comment"># 查看每个服务的启动耗时</span></span><br><span class="line">$ systemd-analyze blame</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示瀑布状的启动过程流</span></span><br><span class="line">$ systemd-analyze critical-chain</span><br><span class="line"></span><br><span class="line"><span class="comment"># 显示指定服务的启动流</span></span><br><span class="line">$ systemd-analyze critical-chain atd.service</span><br></pre></td></tr></table></figure>
-
-<h3 id="hostnamectl"><a href="#hostnamectl" class="headerlink" title="hostnamectl"></a><code>hostnamectl</code></h3><p><code>hostnamectl</code>命令用于查看当前主机的信息。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 显示当前主机的信息</span></span><br><span class="line">$ <span class="built_in">sudo</span> hostnamectl</span><br><span class="line">   Static hostname: n/a                                      </span><br><span class="line">Transient hostname: localhost</span><br><span class="line">         Icon name: computer-vm</span><br><span class="line">           Chassis: vm</span><br><span class="line">        Machine ID: 3af2603ba85e4b9998585459a851f47a</span><br><span class="line">           Boot ID: fe23723dd9ee439581cc046701c0c6d0</span><br><span class="line">    Virtualization: kvm</span><br><span class="line">  Operating System: openEuler 22.03 (LTS-SP2)</span><br><span class="line">            Kernel: Linux 5.10.0-153.12.0.92.oe2203sp2.x86_64</span><br><span class="line">      Architecture: x86-64</span><br><span class="line">   Hardware Vendor: Tencent Cloud</span><br><span class="line">    Hardware Model: CVM</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 设置主机名。</span></span><br><span class="line">$ <span class="built_in">sudo</span> hostnamectl set-hostname rhel7</span><br></pre></td></tr></table></figure>
-<h1 id="任务管理"><a href="#任务管理" class="headerlink" title="任务管理"></a>任务管理</h1><h2 id="cron-crontab"><a href="#cron-crontab" class="headerlink" title="cron &amp; crontab"></a><code>cron</code> &amp; <code>crontab</code></h2><blockquote>
-<p>“Cron”一词来自于希腊语中的”kronos”（Κρόνος），意为时间或期限。</p>
-</blockquote>
-<h3 id="关键概念"><a href="#关键概念" class="headerlink" title="关键概念"></a>关键概念</h3><ul>
-<li>cron：cron 是一个守护进程，负责进行周期性的调度</li>
-<li>crontab：这里有两个含义：<ul>
-<li>负责管理 cron 调度的工具</li>
-<li>cron 调度的配置文件,每个用户可以有自己的 crontab 文件，通常存储在 <code>/var/spool/cron/</code> 目录下，以用户名命名。这些文件包含了用户定义的定时任务列表。</li>
-</ul>
-</li>
-</ul>
-<h3 id="cron-运行机制"><a href="#cron-运行机制" class="headerlink" title="cron 运行机制"></a>cron 运行机制</h3><ul>
-<li><strong>守护进程启动</strong>：<ul>
-<li>系统启动时，cron 守护进程会作为后台进程启动，并持续运行监听任务的执行需求。</li>
-</ul>
-</li>
-<li><strong>定时检查</strong>：<ul>
-<li>Cron 守护进程每分钟检查一次预定任务的执行时间，即使系统时间发生变化，也会确保按照新的时间执行任务。</li>
-</ul>
-</li>
-<li><strong>读取 crontab 文件</strong>：<ul>
-<li>Cron 会读取系统中每个用户的 crontab 文件，这些文件通常存储在 <code>/var/spool/cron/</code> 目录中，文件名与用户名对应。</li>
-</ul>
-</li>
-<li><strong>执行任务</strong>：<ul>
-<li>当 cron 执行任务时，它会以预定义的用户环境变量运行命令。这意味着任务的执行环境可能会与手动执行命令时稍有不同，例如路径变量和其他环境设置。</li>
-</ul>
-</li>
-<li><strong>记录日志</strong>：<ul>
-<li>每次任务执行完成后，cron 会将执行的结果记录到系统日志中，例如 <code>/var/log/syslog</code> 或 <code>/var/log/cron</code>。这些日志记录对于监视任务执行情况和排查问题非常重要。</li>
-</ul>
-</li>
-</ul>
-<h3 id="crontab-配置文件语法"><a href="#crontab-配置文件语法" class="headerlink" title="crontab 配置文件语法"></a>crontab 配置文件语法</h3><p>我们查看 <code>/etc/crontab</code> 配置文件<br><img src="/../images/Pasted%20image%2020240711005938.png"><br>可以看到语法为： <code>* * * * * user-name command_to_execute</code><br><img src="/../images/Pasted%20image%2020240711123800.png"></p>
-<h3 id="crontab-配置工具"><a href="#crontab-配置工具" class="headerlink" title="crontab 配置工具"></a>crontab 配置工具</h3><p>命令格式 <code>crontab -u user_name -e -l -r</code> </p>
-<ul>
-<li>-e 编辑配置文件</li>
-<li>-l 列出配置文件</li>
-<li>-r 删除配置文件内容</li>
-</ul>
-<h3 id="demo-实现简单的定时工具"><a href="#demo-实现简单的定时工具" class="headerlink" title="demo 实现简单的定时工具"></a>demo 实现简单的定时工具</h3><h4 id="编写执行脚本"><a href="#编写执行脚本" class="headerlink" title="编写执行脚本"></a>编写执行脚本</h4><p><img src="/../images/Pasted%20image%2020240711014800.png"><br>将当前时间输出到 <code>timer.txt</code> 文件</p>
-<h4 id="编辑-crontab-文件"><a href="#编辑-crontab-文件" class="headerlink" title="编辑 crontab 文件"></a>编辑 crontab 文件</h4><p>使用 <code>crontab -e</code> 编写 crontab 文件<br><img src="/../images/Pasted%20image%2020240711015004.png"><br>每分钟执行脚本，并将错误输出和标准输出重定向</p>
-<h4 id="查看结果"><a href="#查看结果" class="headerlink" title="查看结果"></a>查看结果</h4><p><img src="/../images/Pasted%20image%2020240711015053.png"><br>每分钟 1 秒时候，时间被写入 <code>timer.txt</code><br><img src="/../images/Pasted%20image%2020240711015337.png"><br>查看我们刚才编写的定时程序</p>
-<h2 id="使用-将程序放在后台运行"><a href="#使用-将程序放在后台运行" class="headerlink" title="使用 &amp; 将程序放在后台运行"></a>使用 &amp; 将程序放在后台运行</h2><p>在指令最后加上 &amp; 符号，将该程序放在后台运行，该进程的父进程为当前 bash</p>
-<h3 id="demo"><a href="#demo" class="headerlink" title="demo"></a>demo</h3><p>编写 python 程序，每十秒钟将时间写入 timer.txt 文件</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> datetime <span class="keyword">as</span> dt</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">file_path = <span class="string">&quot;/root/openEuler_study/timer.txt&quot;</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line"></span><br><span class="line">    current_time = dt.datetime.now()</span><br><span class="line"></span><br><span class="line">    time_str = current_time.strftime(<span class="string">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(file_path,<span class="string">&quot;+a&quot;</span>) <span class="keyword">as</span> file:</span><br><span class="line"></span><br><span class="line">        file.write(time_str + <span class="string">&quot;\n&quot;</span>)</span><br><span class="line"></span><br><span class="line">    time.sleep(<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
-<p> 将该程序放在后台运行<br> <img src="/../images/Pasted%20image%2020240711134320.png"><br> [ 1 ] 中数字代表 jobs 编号，后面数字是该进程 pid<br> 使用 <code>ps -l</code> 查看完整信息<br> <img src="/../images/Pasted%20image%2020240711134444.png"><br> 我们可以看到该进程的父进程为当前 bash<br> 查看 timer.txt 文件是否被正确写入<br> <img src="/../images/Snipaste_2024-07-11_13-45-47.png"><br> 每十秒写入一次<br> 结束该进程我们可以使用 <code>kill %[josb ID]</code> or <code>kill [PID]</code><br> <img src="/../images/Snipaste_2024-07-11_13-47-12.png"></p>
-<h2 id="At-实现定时任务管理"><a href="#At-实现定时任务管理" class="headerlink" title="At 实现定时任务管理"></a>At 实现定时任务管理</h2><h3 id="1-用户提交任务"><a href="#1-用户提交任务" class="headerlink" title="1. 用户提交任务"></a>1. 用户提交任务</h3><p>当用户通过 <code>at</code> 命令提交任务时，系统会记录下任务的具体执行时间和需要执行的命令。命令示例如下：<br><img src="/../images/Pasted%20image%2020240712012827.png"><br>或者使用 <code>echo</code> 提交任务<br><code>echo &quot;sh /path/to/your/script.sh&quot; | at 15:30</code></p>
-<h3 id="2-任务存储"><a href="#2-任务存储" class="headerlink" title="2. 任务存储"></a>2. 任务存储</h3><p>任务提交后，<code>at</code> 命令会将任务信息存储在一个指定目录中，通常是 <code>/var/spool/at</code>。每个任务会生成一个文件，文件名包含了任务的执行时间和其他信息。</p>
-<h3 id="3-任务调度"><a href="#3-任务调度" class="headerlink" title="3. 任务调度"></a>3. 任务调度</h3><p>系统中有一个守护进程 <code>atd</code>，它负责定期检查任务存储目录中的任务文件。<code>atd</code> 会读取这些文件，解析任务的执行时间，并将任务排入调度队列。</p>
-<h3 id="4-任务执行"><a href="#4-任务执行" class="headerlink" title="4. 任务执行"></a>4. 任务执行</h3><p>当 <code>atd</code> 检测到某个任务的执行时间到了，它会读取该任务文件中的命令，并在指定的时间执行这些命令。执行的过程类似于用户在命令行直接输入这些命令。</p>
-<h2 id="nohub-命令"><a href="#nohub-命令" class="headerlink" title="nohub 命令"></a>nohub 命令</h2><p><img src="/../images/Pasted%20image%2020240712012954.png"></p>
-<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yund/p/17612692.html">Linux 系统服务和守护进程</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html">Systemd 入门教程：命令篇</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/mollyviron/p/17270506.html" title="发布于 2023-03-29 21:58">crontab使用说明【一文搞懂Linux定时任务Crontab】</a></li>
-<li></li>
-</ul>
-
-      
+    <!-- back to top button -->
+    <div class="footer-fixed-btn footer-fixed-btn--hidden back-top">
+        <div>&#xe639;</div>
     </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/d78e2e2.html" data-id="clz9xnk78000304t6e27uc0w7" data-title="openEuler：系统服务的配置和管理" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="tag">任务管理</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/" rel="tag">系统服务</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-openEuler：物理存储及逻辑卷管理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2d7002e4.html" class="article-date">
-  <time class="dt-published" datetime="2024-07-28T14:21:39.000Z" itemprop="datePublished">2024-07-28</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>►<a class="article-category-link" href="/categories/Linux/openEuler/">openEuler</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2d7002e4.html">openEuler：物理存储及逻辑卷管理</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="磁盘存储挂载与使用"><a href="#磁盘存储挂载与使用" class="headerlink" title="磁盘存储挂载与使用"></a>磁盘存储挂载与使用</h1><h2 id="磁盘挂载"><a href="#磁盘挂载" class="headerlink" title="磁盘挂载"></a>磁盘挂载</h2><p>磁盘挂载（mounting）是指在操作系统中将一个存储设备（如硬盘、SSD、光盘、U盘等）连接到<strong>文件系统</strong>，使其可以被系统和用户访问和使用。挂载后，存储设备上的文件和目录将会出现在指定的挂载点（通常是一个空的目录）下，用户可以通过这个挂载点来访问和操作这些文件和目录。</p>
-<h3 id="使用mount查看磁盘挂载信息"><a href="#使用mount查看磁盘挂载信息" class="headerlink" title="使用mount查看磁盘挂载信息"></a>使用mount查看磁盘挂载信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost yum.repos.d]# mount</span><br><span class="line">proc on /proc <span class="built_in">type</span> proc (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">sysfs on /sys <span class="built_in">type</span> sysfs (rw,nosuid,nodev,noexec,relatime,seclabel)</span><br><span class="line">devtmpfs on /dev <span class="built_in">type</span> devtmpfs (rw,nosuid,seclabel,size=4096k,nr_inodes=1048576,mode=755)</span><br><span class="line">securityfs on /sys/kernel/security <span class="built_in">type</span> securityfs (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">tmpfs on /dev/shm <span class="built_in">type</span> tmpfs (rw,nosuid,nodev,seclabel)</span><br><span class="line">devpts on /dev/pts <span class="built_in">type</span> devpts (rw,nosuid,noexec,relatime,seclabel,gid=5,mode=620,ptmxmode=000)</span><br><span class="line">tmpfs on /run <span class="built_in">type</span> tmpfs (rw,nosuid,nodev,seclabel,size=299212k,nr_inodes=819200,mode=755)</span><br><span class="line">tmpfs on /sys/fs/cgroup <span class="built_in">type</span> tmpfs (ro,nosuid,nodev,noexec,seclabel,size=4096k,nr_inodes=1024,mode=755)</span><br><span class="line">cgroup on /sys/fs/cgroup/systemd <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,xattr,release_agent=/usr/lib/systemd/systemd-cgroups-agent,name=systemd)</span><br><span class="line">none on /sys/fs/bpf <span class="built_in">type</span> bpf (rw,nosuid,nodev,noexec,relatime,mode=700)</span><br><span class="line">cgroup on /sys/fs/cgroup/rdma <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,rdma)</span><br><span class="line">cgroup on /sys/fs/cgroup/net_cls,net_prio <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,net_cls,net_prio)</span><br><span class="line">cgroup on /sys/fs/cgroup/cpuset <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,cpuset)</span><br><span class="line">cgroup on /sys/fs/cgroup/freezer <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,freezer)</span><br><span class="line">cgroup on /sys/fs/cgroup/pids <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,pids)</span><br><span class="line">cgroup on /sys/fs/cgroup/hugetlb <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,hugetlb)</span><br><span class="line">cgroup on /sys/fs/cgroup/cpu,cpuacct <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,cpu,cpuacct)</span><br><span class="line">cgroup on /sys/fs/cgroup/perf_event <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,perf_event)</span><br><span class="line">cgroup on /sys/fs/cgroup/memory <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,memory)</span><br><span class="line">cgroup on /sys/fs/cgroup/blkio <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,blkio)</span><br><span class="line">cgroup on /sys/fs/cgroup/devices <span class="built_in">type</span> cgroup (rw,nosuid,nodev,noexec,relatime,seclabel,devices)</span><br><span class="line">/dev/mapper/openeuler-root on / <span class="built_in">type</span> ext4 (rw,relatime,seclabel)</span><br><span class="line">selinuxfs on /sys/fs/selinux <span class="built_in">type</span> selinuxfs (rw,nosuid,noexec,relatime)</span><br><span class="line">systemd-1 on /proc/sys/fs/binfmt_misc <span class="built_in">type</span> autofs (rw,relatime,fd=35,pgrp=1,<span class="built_in">timeout</span>=0,minproto=5,maxproto=5,direct,pipe_ino=14884)</span><br><span class="line">hugetlbfs on /dev/hugepages <span class="built_in">type</span> hugetlbfs (rw,relatime,seclabel,pagesize=2M)</span><br><span class="line">mqueue on /dev/mqueue <span class="built_in">type</span> mqueue (rw,nosuid,nodev,noexec,relatime,seclabel)</span><br><span class="line">debugfs on /sys/kernel/debug <span class="built_in">type</span> debugfs (rw,nosuid,nodev,noexec,relatime,seclabel)</span><br><span class="line">tracefs on /sys/kernel/tracing <span class="built_in">type</span> tracefs (rw,nosuid,nodev,noexec,relatime,seclabel)</span><br><span class="line">fusectl on /sys/fs/fuse/connections <span class="built_in">type</span> fusectl (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">configfs on /sys/kernel/config <span class="built_in">type</span> configfs (rw,nosuid,nodev,noexec,relatime)</span><br><span class="line">tmpfs on /tmp <span class="built_in">type</span> tmpfs (rw,nosuid,nodev,seclabel,size=748028k,nr_inodes=1048576)</span><br><span class="line">/dev/vda1 on /boot <span class="built_in">type</span> ext4 (rw,relatime,seclabel)</span><br></pre></td></tr></table></figure>
-<h4 id="信息的解释"><a href="#信息的解释" class="headerlink" title="信息的解释"></a>信息的解释</h4><ul>
-<li><strong>设备名</strong>：例如 <code>/dev/sda1</code>、<code>/dev/sda2</code>、<code>/dev/sdb1</code> 等，表示挂载的设备或分区。</li>
-<li><strong>挂载点</strong>：例如 <code>/</code>、<code>/home</code>、<code>/mnt/mydisk</code> 等，表示设备挂载到的目录。</li>
-<li><strong>文件系统类型</strong>：例如 <code>ext4</code>、<code>iso9660</code>、<code>squashfs</code> 等，表示设备使用的文件系统类型。</li>
-<li><strong>挂载选项</strong>：例如 <code>rw</code>、<code>relatime</code>、<code>ro</code>、<code>nosuid</code> 等，表示挂载时使用的选项。</li>
-</ul>
-<h3 id="fdisk-l查看磁盘信息"><a href="#fdisk-l查看磁盘信息" class="headerlink" title="fdisk -l查看磁盘信息"></a>fdisk -l查看磁盘信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost boot]# fdisk -l</span><br><span class="line">Disk /dev/vda：40 GiB，42949672960 字节，83886080 个扇区</span><br><span class="line">单元：扇区 / 1 * 512 = 512 字节</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x849d8593</span><br><span class="line"></span><br><span class="line">设备       启动    起点     末尾     扇区 大小 Id 类型</span><br><span class="line">/dev/vda1  *       2048  2099199  2097152   1G 83 Linux</span><br><span class="line">/dev/vda2       2099200 83886079 81786880  39G 8e Linux LVM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disk /dev/mapper/openeuler-root：36.94 GiB，39665532928 字节，77471744 个扇区</span><br><span class="line">单元：扇区 / 1 * 512 = 512 字节</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disk /dev/mapper/openeuler-swap：2.05 GiB，2206203904 字节，4308992 个扇区</span><br><span class="line">单元：扇区 / 1 * 512 = 512 字节</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br></pre></td></tr></table></figure>
-<h3 id="使用df-h查看磁盘挂载，容量，利用率"><a href="#使用df-h查看磁盘挂载，容量，利用率" class="headerlink" title="使用df -h查看磁盘挂载，容量，利用率"></a>使用df -h查看磁盘挂载，容量，利用率</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost boot]# <span class="built_in">df</span> -h</span><br><span class="line">文件系统                    容量  已用  可用 已用% 挂载点</span><br><span class="line">devtmpfs                    4.0M     0  4.0M    0% /dev</span><br><span class="line">tmpfs                       731M     0  731M    0% /dev/shm</span><br><span class="line">tmpfs                       293M   30M  263M   11% /run</span><br><span class="line">tmpfs                       4.0M     0  4.0M    0% /sys/fs/cgroup</span><br><span class="line">/dev/mapper/openeuler-root   37G  1.8G   33G    6% /</span><br><span class="line">tmpfs                       731M     0  731M    0% /tmp</span><br><span class="line">/dev/vda1                   974M  151M  756M   17% /boot</span><br></pre></td></tr></table></figure>
-
-<hr>
-<h2 id="磁盘分区"><a href="#磁盘分区" class="headerlink" title="磁盘分区"></a>磁盘分区</h2><blockquote>
-<p><strong>硬盘分区</strong>是使用分割编辑器（partition editor）在<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%A3%81%E7%A2%9F" title="磁盘">磁盘</a>上划分几个逻辑部分，碟片一旦划分成数个分割（Partition），不同类的目录与文件可以存储进不同的分割。</p>
-</blockquote>
-<p>磁盘分区主要有 <strong>MBR</strong> 和 <strong>GPT</strong> 两种格式，两种不同的<strong>磁盘分区表标准</strong></p>
-<h3 id="使用-lsblk-列出系统上所有磁盘列表"><a href="#使用-lsblk-列出系统上所有磁盘列表" class="headerlink" title="使用 lsblk 列出系统上所有磁盘列表"></a>使用 <code>lsblk</code> 列出系统上所有磁盘列表</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost boot]# lsblk</span><br><span class="line">NAME               MAJ:MIN RM   SIZE RO TYPE MOUNTPOINTS</span><br><span class="line">sr0                 11:0    1 223.5M  0 rom  </span><br><span class="line">vda                252:0    0    40G  0 disk </span><br><span class="line">├─vda1             252:1    0     1G  0 part /boot</span><br><span class="line">└─vda2             252:2    0    39G  0 part </span><br><span class="line">  ├─openeuler-root 253:0    0  36.9G  0 lvm  /</span><br><span class="line">  └─openeuler-swap 253:1    0   2.1G  0 lvm  [SWAP]</span><br></pre></td></tr></table></figure>
-<p>  从输出信息来看，主要分为两个sr0，vda装置，vda中分为两个分区vda1，vda2，vda2中还有 LVM 产生的文件系统</p>
-<h4 id="信息解释"><a href="#信息解释" class="headerlink" title="信息解释"></a>信息解释</h4><ul>
-<li>NAME：装置文件名，会省略 &#x2F;dev 等前导目录</li>
-<li><strong>MAJ:MIN</strong>：其实核心认识的装置都是通过这两个代码来熟悉的，分别是：<code>主要:次要</code> 装置</li>
-<li>RM：是否为颗拆卸装置（removable device）。如光盘、USB 磁盘等</li>
-<li>SIZE：容量</li>
-<li>RO：是否为只读</li>
-<li>TYPE：磁盘 disk、分区槽 partition、只读存储器 rom</li>
-<li>MOUTPOINT：挂载点</li>
-</ul>
-<h3 id="分区架构"><a href="#分区架构" class="headerlink" title="分区架构"></a>分区架构</h3><ul>
-<li>主分区</li>
-<li>扩展分区（它本身不能存储数据，而是一个容器，可以包含多个逻辑分区）<ul>
-<li>逻辑分区1</li>
-<li>逻辑分区2</li>
-<li>逻辑分区3</li>
-</ul>
-</li>
-</ul>
-<h3 id="分区命名规则"><a href="#分区命名规则" class="headerlink" title="分区命名规则"></a>分区命名规则</h3><p><code>/dev/vd&#123;a-z&#125;&#123;number&#125;</code></p>
-<ul>
-<li><code>/dev/</code> 设备名称</li>
-<li><code>vd</code> 设备类型（ <code>hd/sd</code> )</li>
-<li><code>&#123;a-z&#125;</code> 设备序号</li>
-<li><code>&#123;number&#125;</code> 分区编号</li>
-</ul>
-<h2 id="磁盘分区方案"><a href="#磁盘分区方案" class="headerlink" title="磁盘分区方案"></a>磁盘分区方案</h2><h3 id="MBR"><a href="#MBR" class="headerlink" title="MBR"></a>MBR</h3><p>使用 <code>parted /dev/vda print</code> 列出磁盘的分区表类型与分区信息</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost boot]# parted /dev/vda <span class="built_in">print</span></span><br><span class="line">型号：Virtio 块设备 (virtblk)</span><br><span class="line">磁盘 /dev/vda：42.9GB</span><br><span class="line">扇区大小 (逻辑/物理)：512B/512B</span><br><span class="line">分区表：msdos</span><br><span class="line">磁盘标志：</span><br><span class="line"></span><br><span class="line">编号  起始点  结束点  大小    类型     文件系统  标志</span><br><span class="line"> 1    1049kB  1075MB  1074MB  primary  ext4      启动</span><br><span class="line"> 2    1075MB  42.9GB  41.9GB  primary            lvm</span><br></pre></td></tr></table></figure>
-<p> 我们看到分区表类型 <code>msdos</code> 是指MBR分区表 — 使用 <code>fdisk</code> 分区工具，执行以下操作对某个磁盘进行操作<br> <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/vda</span><br></pre></td></tr></table></figure></p>
-<h3 id="GPT"><a href="#GPT" class="headerlink" title="GPT"></a>GPT</h3><ul>
-<li>GPT 分区标准摆脱了 MBR 的最大支持 2TB 的限制，支持更大的磁盘容量</li>
-<li>没有主分区和逻辑分区的区别</li>
-<li>每一个分区有一个全局标识符（GUID）</li>
-<li>使用 <code>gdisk</code> 工具</li>
-</ul>
-<h3 id="parted-分区工具"><a href="#parted-分区工具" class="headerlink" title="parted 分区工具"></a>parted 分区工具</h3><p><code>parted /dev/vda</code> 进入交互模式</p>
-<h2 id="fstab-介绍"><a href="#fstab-介绍" class="headerlink" title="fstab 介绍"></a>fstab 介绍</h2><p>静态存储了磁盘存储挂载信息，在系统启动时，会自动调取该文件进行磁盘挂载，这样就不需要手动进行挂载</p>
-<h3 id="fstab文件格式"><a href="#fstab文件格式" class="headerlink" title="fstab文件格式"></a>fstab文件格式</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># &lt;file system&gt;   &lt;mount point&gt;   &lt;type&gt;   &lt;options&gt;         &lt;dump&gt;   &lt;pass&gt;</span></span><br><span class="line">/dev/sda1         /boot           ext4     defaults          <span class="number">1</span>        <span class="number">2</span></span><br><span class="line">/dev/mapper/root  /               ext4     defaults          <span class="number">0</span>        <span class="number">1</span></span><br><span class="line">UUID=<span class="number">12345678</span>-<span class="number">9</span>ab /home           ext4     defaults          <span class="number">0</span>        <span class="number">2</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>&lt;file system&gt;</code>：文件系统的设备路径或UUID</li>
-<li><code>&lt;mount point&gt;</code>：文件系统要挂载到的路径</li>
-<li><code>&lt;type&gt;</code>：文件系统类型</li>
-<li><code>&lt;options&gt;</code>：挂载选项，例如<code>defaults</code>、<code>noauto</code>、<code>ro</code>、<code>rw</code>等</li>
-<li><code>&lt;dump&gt;</code>：用于备份工具的备份级别，默认为0</li>
-<li><code>&lt;pass&gt;</code>：用于<code>fsck</code>工具的文件系统检查顺序，默认为0（不检查）<br><img src="/../images/Pasted%20image%2020240706181827.png"></li>
-</ul>
-<hr>
-<h1 id="逻辑卷管理（LVM）"><a href="#逻辑卷管理（LVM）" class="headerlink" title="逻辑卷管理（LVM）"></a>逻辑卷管理（LVM）</h1><blockquote>
-<p>LVM 是 Linux 系统对磁盘分区的一种管理机制，是在磁盘分区之上建立一个逻辑层，这个逻辑层让多个硬盘或者分区看起来像一块逻辑硬盘，然后将这块逻辑硬盘分成逻辑卷之后使用，从而大大提高了分区的灵活性。</p>
-</blockquote>
-<h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><ul>
-<li>PE（Physical Extend）：物理单元，能被 LVM 寻址的最小单元</li>
-<li>PV（Physical Volume）：物理卷，即实际存在的分区</li>
-<li>VG（Volume Group）：卷组，一个或多个物理卷组成卷组，可以将卷组想象成为一个新的逻辑磁盘</li>
-<li>LV（Logical Volume）：逻辑卷，将卷组重新分配为多个逻辑卷，是用户实际使用的逻辑设备<br><img src="/../images/Pasted%20image%2020240706224408.png"></li>
-</ul>
-<h2 id="使用-LVM-创建管理逻辑卷"><a href="#使用-LVM-创建管理逻辑卷" class="headerlink" title="使用 LVM 创建管理逻辑卷"></a>使用 LVM 创建管理逻辑卷</h2><h3 id="物理卷操作"><a href="#物理卷操作" class="headerlink" title="物理卷操作"></a>物理卷操作</h3><ul>
-<li>创建物理卷<br>命令为 <code>pvcreate [option] devname</code><br>详细用法使用 <code>pvcreate --help</code> 查看</li>
-<li>查看物理卷信息<br>命令为 <code>pvdisplay [option] devname</code> ，我们可以看到信息包括如下<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">--- Physical volume ---</span><br><span class="line">  PV Name               /dev/vda2</span><br><span class="line">  VG Name               openeuler</span><br><span class="line">  PV Size               &lt;39.00 GiB / not usable 3.00 MiB</span><br><span class="line">  Allocatable           <span class="built_in">yes</span> (but full)</span><br><span class="line">  PE Size               4.00 MiB</span><br><span class="line">  Total PE              9983</span><br><span class="line">  Free PE               0</span><br><span class="line">  Allocated PE          9983</span><br><span class="line">  PV UUID               yoL1lh-t5IG-VVPT-13dO-LxVD-LXvk-NnkUfE</span><br></pre></td></tr></table></figure></li>
-<li>修改物理卷信息<br>命令为 <code>pvchange [option] devname</code><br>详细用法使用 <code>pvchange --help</code> 查看</li>
-<li>删除物理卷<br>命令为 <code>pvremove [option] devname</code></li>
-</ul>
-<h3 id="卷组操作"><a href="#卷组操作" class="headerlink" title="卷组操作"></a>卷组操作</h3><ul>
-<li>创建卷组 <code>vgcreate [option] vgname pvname ...</code></li>
-<li>查看卷组 <code>vgdisplay [option] [vgname]</code></li>
-<li>修改卷组属性 <code>vgchange [option] vgname</code></li>
-<li>扩展卷组 <code>vgextend [option] vgname pvname ...</code></li>
-<li>收缩卷组 <code>vgreduce [option] vgname pvname ...</code></li>
-<li>删除卷组 <code>vgremove [option] vgname</code></li>
-</ul>
-<h3 id="逻辑卷操作"><a href="#逻辑卷操作" class="headerlink" title="逻辑卷操作"></a>逻辑卷操作</h3><ul>
-<li>创建逻辑卷 <code>lvcreate [option] -n lvname vgname</code></li>
-<li>查看逻辑卷 <code>lvdisplay [option] [lvname]</code></li>
-<li>调整逻辑卷大小 <code>lvresize [option] lvname</code></li>
-<li>扩展逻辑卷 <code>lvextend [option] lvname</code></li>
-<li>收缩逻辑卷 <code>lvreduce [option] lvname</code></li>
-<li>删除逻辑卷 <code>lvremove [option] lvname</code></li>
-</ul>
-<h2 id="参考文章：-Linux-LVM-逻辑卷管理器"><a href="#参考文章：-Linux-LVM-逻辑卷管理器" class="headerlink" title="参考文章：- Linux LVM 逻辑卷管理器"></a>参考文章：<br>- <a target="_blank" rel="noopener" href="https://www.cnblogs.com/cnjavahome/p/11178998.html" title="发布于 2019-07-13 21:52">Linux LVM 逻辑卷管理器</a></h2>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/2d7002e4.html" data-id="clz9xnk76000204t617454wgj" data-title="openEuler：物理存储及逻辑卷管理" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openEuler/" rel="tag">openEuler</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%AD%98%E5%82%A8/" rel="tag">系统存储</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-    <article id="post-使用vscode连接openEuler服务器" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/80f76920.html" class="article-date">
-  <time class="dt-published" datetime="2024-07-24T14:20:39.000Z" itemprop="datePublished">2024-07-24</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/Linux/">Linux</a>►<a class="article-category-link" href="/categories/Linux/openEuler/">openEuler</a>
-  </div>
-
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/80f76920.html">使用vscode连接openEuler服务器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="本地主机准备"><a href="#本地主机准备" class="headerlink" title="本地主机准备"></a>本地主机准备</h1><ul>
-<li><strong>Remote - SSH</strong>：<br><img src="/images/Pasted%20image%2020240706012413.png"></li>
-</ul>
-<h1 id="服务器准备"><a href="#服务器准备" class="headerlink" title="服务器准备"></a>服务器准备</h1><h2 id="官方文档提供的提前准备"><a href="#官方文档提供的提前准备" class="headerlink" title="官方文档提供的提前准备"></a>官方文档提供的<strong>提前准备</strong></h2><table>
-<thead>
-<tr>
-<th>Distribution</th>
-<th>Base Requirements</th>
-<th>Remote - SSH Requirements</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>General</td>
-<td>kernel &gt;&#x3D; 4.18, glibc &gt;&#x3D;2.28, libstdc++ &gt;&#x3D; 3.4.25, tar</td>
-<td>OpenSSH server, <code>bash</code>, and <code>curl</code> or <code>wget</code></td>
-<td>Run <code>ldd --version</code> to check the glibc version. Run <code>strings /usr/lib64/libstdc++.so.6 | grep GLIBCXX</code> to see if libstdc++ 3.4.25 is available.</td>
-</tr>
-<tr>
-<td>General for Arm32</td>
-<td><code>libatomic1</code></td>
-<td>No additional requirements.</td>
-<td></td>
-</tr>
-<tr>
-<td>Ubuntu 20.04+, Debian 10+, Raspberry Pi OS Buster&#x2F;10+ and downstream distributions</td>
-<td><code>libc6 libstdc++6 ca-certificates tar</code></td>
-<td><code>openssh-server bash</code> and <code>curl</code> or <code>wget</code></td>
-<td>Requires kernel &gt;&#x3D; 4.18, glibc &gt;&#x3D; 2.28, libstdc++ &gt;&#x3D; 3.4.25.</td>
-</tr>
-<tr>
-<td>RHEL &#x2F; CentOS 8+</td>
-<td><code>glibc libgcc libstdc++ ca-certificates tar</code></td>
-<td><code>openssh-server bash</code> and <code>curl</code> or <code>wget</code></td>
-<td>Requires kernel &gt;&#x3D; 4.18, glibc &gt;&#x3D; 2.28, libstdc++ &gt;&#x3D; 3.4.25.</td>
-</tr>
-<tr>
-<td>Alpine Linux 3.16+</td>
-<td><code>musl libgcc libstdc++</code>. musl &gt;&#x3D; 1.2.3, glibc not required.</td>
-<td>Not yet supported.</td>
-<td>Supported in Dev Containers and WSL. Extensions installed in the container may not work due to <code>glibc</code> dependencies in extension native code.</td>
-</tr>
-<tr>
-<td>openSUSE Leap &#x2F; SUSE Linux Enterprise 15+</td>
-<td><code>glibc libgcc_s1 libstdc++6 ca-certificates gzip tar</code></td>
-<td><code>curl</code> or <code>wget</code></td>
-<td>Requires kernel &gt;&#x3D; 4.18, glibc, libstdc++6</td>
-</tr>
-</tbody></table>
-<h2 id="针对openEuler的准备"><a href="#针对openEuler的准备" class="headerlink" title="针对openEuler的准备"></a>针对openEuler的准备</h2><h3 id="缺少tar-解压工具"><a href="#缺少tar-解压工具" class="headerlink" title="缺少tar 解压工具"></a>缺少tar 解压工具</h3><p>检查是否缺少tar解压工具</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# tar</span><br><span class="line">-bash: tar：未找到命令</span><br></pre></td></tr></table></figure>
-<p>使用以下命令安装tar</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install tar</span><br></pre></td></tr></table></figure>
-<h3 id="端口转发未开启"><a href="#端口转发未开启" class="headerlink" title="端口转发未开启"></a>端口转发未开启</h3><ol>
-<li>我们查看sshd 服务配置文件<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]# <span class="built_in">cat</span> /etc/ssh/sshd_config</span><br></pre></td></tr></table></figure></li>
-<li>找到以下两个配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AllowTcpForwarding no</span><br><span class="line">AllowAgentForwarding no</span><br></pre></td></tr></table></figure></li>
-<li>将 ‘ no ‘改为’ yes ‘<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">AllowTcpForwarding yes</span><br><span class="line">AllowAgentForwarding yes</span><br></pre></td></tr></table></figure></li>
-<li>重启sshd 服务<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl restart sshd.service</span><br></pre></td></tr></table></figure></li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://example.com/80f76920.html" data-id="clz9xnk7a000604t6diuy4aoc" data-title="使用vscode连接openEuler服务器" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/openEuler/" rel="tag">openEuler</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/openEuler/">openEuler</a></li></ul></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/openEuler/" rel="tag">openEuler</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="tag">任务管理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E5%AD%98%E5%82%A8/" rel="tag">系统存储</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/" rel="tag">系统服务</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/openEuler/" style="font-size: 20px;">openEuler</a> <a href="/tags/%E4%BB%BB%E5%8A%A1%E7%AE%A1%E7%90%86/" style="font-size: 10px;">任务管理</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E5%AD%98%E5%82%A8/" style="font-size: 10px;">系统存储</a> <a href="/tags/%E7%B3%BB%E7%BB%9F%E6%9C%8D%E5%8A%A1/" style="font-size: 20px;">系统服务</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/07/">July 2024</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/d78e2e2.html">openEuler：系统服务的配置和管理</a>
-          </li>
-        
-          <li>
-            <a href="/2d7002e4.html">openEuler：物理存储及逻辑卷管理</a>
-          </li>
-        
-          <li>
-            <a href="/80f76920.html">使用vscode连接openEuler服务器</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2024 Mark Lee<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
 
+        <!-- wrapper -->
+        <div class="wrapper">
+            <div class="site-intro" style="    height:50vh;
+">
+    <!-- 主页  -->
+    <!-- 文章页  -->
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/index-bg.png)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+                MarkLee's Studio.
+            <!-- 文章页  -->
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+                    it's better to burn out than to fade away
+            <!-- 文章页  -->
+        </p>
+        <!-- 文章页 meta -->
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
+</div>
+
+            <script>
+  // get user agent
+  function getBrowserVersions() {
+    var u = window.navigator.userAgent
+    return {
+      userAgent: u,
+      trident: u.indexOf('Trident') > -1, //IE内核
+      presto: u.indexOf('Presto') > -1, //opera内核
+      webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+      gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+      mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+      ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+      android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+      iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+      iPad: u.indexOf('iPad') > -1, //是否为iPad
+      webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+      weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+      uc: u.indexOf('UCBrowser') > -1, //是否为android下的UC浏览器
+    }
+  }
+  var browser = {
+    versions: getBrowserVersions(),
+  }
+  console.log('userAgent: ' + browser.versions.userAgent)
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded')
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document
+        .getElementsByClassName('intro-title')[0]
+        .classList.add('intro-fade-in')
+      document
+        .getElementsByClassName('intro-subtitle')[0]
+        .classList.add('intro-fade-in')
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in')
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb() {
+    if (browser.versions.uc) {
+      console.log('UCBrowser')
+      fontLoaded()
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular'],
+        },
+        loading: function () {
+          // 所有字体开始加载
+          // console.log('font loading');
+        },
+        active: function () {
+          // 所有字体已渲染
+          fontLoaded()
+        },
+        inactive: function () {
+          // 字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout')
+          fontLoaded()
+        },
+        timeout: 5000, // Set the timeout to two seconds
+      })
+    }
+  }
+
+  function asyncErr() {
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document,
+      t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0]
+    o.src = u
+    if (cb) {
+      o.addEventListener(
+        'load',
+        function (e) {
+          cb(null, e)
+        },
+        false
+      )
+    }
+    if (err) {
+      o.addEventListener(
+        'error',
+        function (e) {
+          err(null, e)
+        },
+        false
+      )
+    }
+    s.parentNode.insertBefore(o, s)
+  }
+
+  var asyncLoadWithFallBack = function (arr, success, reject) {
+    var currReject = function () {
+      reject()
+      arr.shift()
+      if (arr.length) async(arr[0], success, currReject)
+    }
+
+    async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack(
+    [
+      'https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js',
+      'https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js',
+      "/lib/webfontloader.min.js",
+    ],
+    asyncCb,
+    asyncErr
+  )
+</script>
+
+            <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" alt="loading">
+            <div class="container container-unloaded">
+                <main class="main index-page">
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/d78e2e2.html">
+                <span class="abstract-title-text">openEuler：系统服务的配置和管理</span>
+            </a>
+            <div class="abstract-content">
+                Tag： #任务管理 #系统服务 #Linux
+系统服务基本概念系统服务系统服务是在系统启动时候自启动的一些后台程序，主要负责一些系统必须的核心功能，如：网络服务，文件系统管理器，日志记录等等一些常见的系统服务包括：
+
+网络服务：如SSH（远程登录）、HTTP服务器（如Apache）、DNS服务器（如BIND）等。
+日志服务：如Syslog，用于记录系统和应用程序的日志信息。
+文件系统服务：如NFS（网络文件系统），允许在不同主机之间共享文件。
+时间同步服务：如NTP（网络时间协议），用于同步系统时间。
+
+守护进程与系统服务的概念区分
+守护进程是一种脱离终端，在后台运行的进程
+这些后台运...
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/07/31">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/31</span>
+                </div>
+                <!-- tags -->
+                    <div class="abstract-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="任务管理">任务管理</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="系统服务">系统服务</a>
+</div>
+
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/2d7002e4.html">
+                <span class="abstract-title-text">openEuler：物理存储及逻辑卷管理</span>
+            </a>
+            <div class="abstract-content">
+                磁盘存储挂载与使用磁盘挂载磁盘挂载（mounting）是指在操作系统中将一个存储设备（如硬盘、SSD、光盘、U盘等）连接到文件系统，使其可以被系统和用户访问和使用。挂载后，存储设备上的文件和目录将会出现在指定的挂载点（通常是一个空的目录）下，用户可以通过这个挂载点来访问和操作这些文件和目录。
+使用mount查看磁盘挂载信息123456789101112131415161718192021222324252627282930313233[root@localhost yum.repos.d]# mountproc on /proc type proc (rw,nosuid,nodev,no...
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/07/31">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/28</span>
+                </div>
+                <!-- tags -->
+                    <div class="abstract-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="Linux">Linux</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="系统存储">系统存储</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="openEuler">openEuler</a>
+</div>
+
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+            
+        <article class="index-post">
+            <a class="abstract-title" href="/80f76920.html">
+                <span class="abstract-title-text">使用vscode连接openEuler服务器</span>
+            </a>
+            <div class="abstract-content">
+                本地主机准备
+Remote - SSH：
+
+服务器准备官方文档提供的提前准备
 
 
-<script src="/js/jquery-3.6.4.min.js"></script>
+Distribution
+Base Requirements
+Remote - SSH Requirements
+Notes
 
 
 
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
+General
+kernel &gt;&#x3D; 4.18, glibc &gt;&#x3D;2.28, libstdc++ &gt;&#x3D; 3.4.25, tar
+OpenSSH server, bash, and curl or wget
+Run ldd --version to check the glibc version. Run strings /usr/l...
+            </div>
+            <!-- read more -->
+            <div class="abstract-post-meta">
+                <!-- date -->
+                <div class="abstract-date" title="Last updated: 2024/07/31">
+                    <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2024/07/24</span>
+                </div>
+                <!-- tags -->
+                    <div class="abstract-tags" >
+        <a class="post-tag" href="javascript:void(0);" data-tags="Linux">Linux</a>
+        <a class="post-tag" href="javascript:void(0);" data-tags="openEuler">openEuler</a>
+</div>
 
+            </div>
+        </article>
+        <div class="index-post-divider"></div>
+    <!-- paginator  -->
+</main>
 
+                <!-- profile -->
+                    <div class="profile">
+    <img class="profile-avatar" alt="avatar" src="/avatar/caton.png" >
+    <div class="profile-name">MarkLee</div>
+        <div class="profile-signature">
+            witness me
+        </div>
+        <div class="profile-social">
+                            <a href="mailto:anyangu@qq.com" class="iconfont-archer email" title="email" ></a>
+                <a href="//github.com/MarkMrLi" class="iconfont-archer github" target="_blank" title="github"></a>
 
+        </div>
+        <div class="profile-link-item">
+            <a href="/about" class="about-me">
+                ABOUT ME
+            </a>
+        </div>
+</div>
 
-<script src="/js/script.js"></script>
+            </div>
+            <footer class="footer footer-unloaded">
+    <!-- social  -->
+        <div class="social">
+                            <a href="mailto:anyangu@qq.com" class="iconfont-archer email" title="email" ></a>
+                <a href="//github.com/MarkMrLi" class="iconfont-archer github" target="_blank" title="github"></a>
 
+        </div>
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- website approve for Chinese user -->
+    <!-- 不蒜子  -->
+        <div class="busuanzi-container">
+                <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+        </div>
+</footer>
 
+        </div>
+        <!-- toc -->
+        <!-- sidebar -->
+        <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+        <div class="sidebar-panel-archives">
+    <!-- 在 ejs 中将 archive 按照时间排序 -->
+        
+        
+        
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 3
+        </div>
+        <!-- search  -->
+    </div>
+    <div class="post-archive">
+            <div class="archive-year"> 2024 </div>
+            <ul class="year-list">
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/31</span>
+            <a class="archive-post-title" href="/d78e2e2.html">openEuler：系统服务的配置和管理</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/28</span>
+            <a class="archive-post-title" href="/2d7002e4.html">openEuler：物理存储及逻辑卷管理</a>
+        </li>
+        <li class="archive-post-item">
+            <span class="archive-post-date">07/24</span>
+            <a class="archive-post-title" href="/80f76920.html">使用vscode连接openEuler服务器</a>
+        </li>
+            </ul>
+    </div>
+</div>
 
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+            <span class="sidebar-tag-name" data-tags="Linux">
+                <span class="iconfont-archer">&#xe606;</span>
+                Linux
+            </span>
+            <span class="sidebar-tag-name" data-tags="系统存储">
+                <span class="iconfont-archer">&#xe606;</span>
+                系统存储
+            </span>
+            <span class="sidebar-tag-name" data-tags="openEuler">
+                <span class="iconfont-archer">&#xe606;</span>
+                openEuler
+            </span>
+            <span class="sidebar-tag-name" data-tags="任务管理">
+                <span class="iconfont-archer">&#xe606;</span>
+                任务管理
+            </span>
+            <span class="sidebar-tag-name" data-tags="系统服务">
+                <span class="iconfont-archer">&#xe606;</span>
+                系统服务
+            </span>
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+        缺失模块，请参考主题文档进行安装配置：https://github.com/fi3ework/hexo-theme-archer#%E5%AE%89%E8%A3%85%E4%B8%BB%E9%A2%98
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
 
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+        <span class="sidebar-category-name" data-categories="Linux">
+            <span class="iconfont-archer">&#xe60a;</span>
+            Linux
+        </span>
+        <span class="sidebar-category-name" data-categories="openEuler">
+            <span class="iconfont-archer">&#xe60a;</span>
+            openEuler
+        </span>
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
 
-  </div>
-</body>
+    </div>
+</div>
+
+        <!-- site-meta -->
+        <script>
+    var siteMetaRoot = "/"
+    if (siteMetaRoot === "undefined") {
+        siteMetaRoot = '/'
+    }
+    var siteMeta = {
+        url: "http://example.com",
+        root: siteMetaRoot,
+        author: "Mark Lee"
+    }
+</script>
+
+        <!-- import experimental options here -->
+        <!-- Custom Font -->
+
+        <!-- main func -->
+        <script src="/scripts/main.js"></script>
+        <!-- fancybox -->
+        <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0.36/dist/fancybox/fancybox.umd.js" onload="window.Fancybox.bind('[data-fancybox]')" defer></script>
+        <!-- algolia -->
+        <!-- busuanzi -->
+            <script src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+        <!-- async load share.js -->
+        <!-- mermaid -->
+    </body>
 </html>
